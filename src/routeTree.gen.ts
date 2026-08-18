@@ -16,6 +16,7 @@ import { Route as PlansRouteImport } from './routes/plans'
 import { Route as ReferralRouteImport } from './routes/referral'
 import { Route as TeamRouteImport } from './routes/team'
 import { Route as WorkRouteImport } from './routes/work'
+import { Route as WorkSlugRouteImport } from './routes/work.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -52,6 +53,11 @@ const WorkRoute = WorkRouteImport.update({
   path: '/work',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorkSlugRoute = WorkSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => WorkRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -60,7 +66,8 @@ export interface FileRoutesByFullPath {
   '/plans': typeof PlansRoute
   '/referral': typeof ReferralRoute
   '/team': typeof TeamRoute
-  '/work': typeof WorkRoute
+  '/work': typeof WorkRouteWithChildren
+  '/work/$slug': typeof WorkSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -69,7 +76,8 @@ export interface FileRoutesByTo {
   '/plans': typeof PlansRoute
   '/referral': typeof ReferralRoute
   '/team': typeof TeamRoute
-  '/work': typeof WorkRoute
+  '/work': typeof WorkRouteWithChildren
+  '/work/$slug': typeof WorkSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -79,7 +87,8 @@ export interface FileRoutesById {
   '/plans': typeof PlansRoute
   '/referral': typeof ReferralRoute
   '/team': typeof TeamRoute
-  '/work': typeof WorkRoute
+  '/work': typeof WorkRouteWithChildren
+  '/work/$slug': typeof WorkSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,6 +100,7 @@ export interface FileRouteTypes {
     | '/referral'
     | '/team'
     | '/work'
+    | '/work/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -100,6 +110,7 @@ export interface FileRouteTypes {
     | '/referral'
     | '/team'
     | '/work'
+    | '/work/$slug'
   id:
     | '__root__'
     | '/'
@@ -109,6 +120,7 @@ export interface FileRouteTypes {
     | '/referral'
     | '/team'
     | '/work'
+    | '/work/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -118,7 +130,7 @@ export interface RootRouteChildren {
   PlansRoute: typeof PlansRoute
   ReferralRoute: typeof ReferralRoute
   TeamRoute: typeof TeamRoute
-  WorkRoute: typeof WorkRoute
+  WorkRoute: typeof WorkRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -172,8 +184,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/work/$slug': {
+      id: '/work/$slug'
+      path: '/$slug'
+      fullPath: '/work/$slug'
+      preLoaderRoute: typeof WorkSlugRouteImport
+      parentRoute: typeof WorkRoute
+    }
   }
 }
+
+interface WorkRouteChildren {
+  WorkSlugRoute: typeof WorkSlugRoute
+}
+
+const WorkRouteChildren: WorkRouteChildren = {
+  WorkSlugRoute: WorkSlugRoute,
+}
+
+const WorkRouteWithChildren = WorkRoute._addFileChildren(WorkRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -182,7 +211,7 @@ const rootRouteChildren: RootRouteChildren = {
   PlansRoute: PlansRoute,
   ReferralRoute: ReferralRoute,
   TeamRoute: TeamRoute,
-  WorkRoute: WorkRoute,
+  WorkRoute: WorkRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
