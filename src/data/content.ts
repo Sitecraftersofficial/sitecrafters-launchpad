@@ -55,3 +55,34 @@ export const aboutContent = {
     "We're a small team based in Kigali. You talk to the people doing the work, and everything — pricing, ownership terms and what your plan covers — is written down before we start.",
   ],
 };
+
+// --- The problem we solve: 8 open hours vs 24 online hours -----------------
+// Edit the labels and bullet points here. `icon` picks the small glyph:
+// "closed" | "hours" | "night" | "day" | "search" | "buy"
+export type AlwaysOpenItem = {
+  text: string;
+  icon: "closed" | "hours" | "night" | "day" | "search" | "buy";
+};
+
+export const alwaysOpen = {
+  eyebrow: "The real problem",
+  title: "Why be available 8 hours when you can be available 24?",
+  description:
+    "Most businesses in Rwanda are only reachable while the doors are open. Customers search, compare and decide at night, on weekends and on public holidays — a website keeps you in that conversation.",
+  closedLabel: "Without a website",
+  closedHours: "8 hours a day",
+  openLabel: "With a SiteCrafters website",
+  openHours: "24 hours a day",
+  without: [
+    { text: "Doors close at 6pm — enquiries stop with them.", icon: "closed" },
+    { text: "Customers call, nobody answers, they call the next business.", icon: "closed" },
+    { text: "Prices and services explained one person at a time.", icon: "hours" },
+    { text: "Invisible to anyone searching on Google.", icon: "search" },
+  ] as AlwaysOpenItem[],
+  with: [
+    { text: "Your services and prices answer questions at 2am.", icon: "night" },
+    { text: "Enquiries and WhatsApp messages arrive while you sleep.", icon: "night" },
+    { text: "Customers find you on Google before they find a competitor.", icon: "search" },
+    { text: "People decide to buy before they ever walk in.", icon: "buy" },
+  ] as AlwaysOpenItem[],
+} as const;
