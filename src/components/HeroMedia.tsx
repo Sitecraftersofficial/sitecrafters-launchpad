@@ -66,5 +66,5 @@ export function HeroMedia() {
   );
 }
 
-/** True when a photo/video背 background is active — lets text switch weight. */
+/** True when a photo/video background is active — lets text switch weight. */
 export const hasHeroMedia = heroMedia.kind !== "gradient" && Boolean(heroMedia.src);
